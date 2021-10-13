@@ -1,5 +1,6 @@
 import 'package:drivers_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:drivers_app/screens/otp/otp_screen.dart';
+import 'package:drivers_app/screens/payment/payment_screen.dart';
 import 'package:drivers_app/screens/profile/profile_screen.dart';
 import 'package:drivers_app/screens/sign_in/sign_in_screen.dart';
 import 'package:drivers_app/screens/sign_up/sign_up_screen.dart';
@@ -16,4 +17,5 @@ final Map<String, WidgetBuilder> routes = {
   HomeScreen.routeName: (context) => HomeScreen(),
   ViolationDetailScreen.routeName: (context) => ViolationDetailScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
+  PaymentScreen.routeName: (context) => PaymentScreen(),
 };

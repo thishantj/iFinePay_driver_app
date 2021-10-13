@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ProfileDetailList extends StatefulWidget {
   const ProfileDetailList({
     Key key,
-    //@required 
+    //@required
     this.nic,
     this.address,
     this.dob,
@@ -129,7 +129,8 @@ class _ProfileDetailListState extends State<ProfileDetailList> {
                           SizedBox(
                             height: displayWidth(context) * 0.025,
                           ),
-                          Flexible(
+                          Container(
+                            width: displayWidth(context) * 0.5,
                             child: Text(
                               widget.address,
                               style: TextStyle(

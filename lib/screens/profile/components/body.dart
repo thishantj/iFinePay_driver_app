@@ -24,8 +24,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   Future getProfileDetails() async {
     var url = DBConnect().conn + "/readProfileDetails.php";
     var response = await http.post(Uri.parse(url), body: {
-      //"licenseNumber": User().getLicense(),
-      "licenseNumber": "B1234567",
+      "licenseNumber": User().getLicense(),
     });
 
     var data = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -36,8 +35,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   Future getDriverName() async {
     var url = DBConnect().conn + "/readDrivername.php";
     var response = await http.post(Uri.parse(url), body: {
-      //"licenseNumber": User().getLicense(),
-      "licenseNumber": "B1234567",
+      "licenseNumber": User().getLicense(),
     });
 
     var data = json.decode(response.body);
@@ -52,7 +50,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   @override
   void initState() {
     super.initState();
-    //getDriverName();
+    getDriverName();
   }
 
   @override
@@ -62,12 +60,12 @@ class _ProfileBodyState extends State<ProfileBody> {
       child: Column(
         children: [
           Container(
-            height: displayHeight(context) * 0.25,
+            height: displayHeight(context) * 0.2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: displayHeight(context) * 0.04,
+                  height: displayHeight(context) * 0.05,
                 ),
                 Padding(
                   padding: EdgeInsets.only(
@@ -93,11 +91,10 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ),
                 SizedBox(
-                  height: displayHeight(context) * 0.03,
+                  height: displayHeight(context) * 0.02,
                 ),
                 Text(
-                  //driverName,
-                  "driverName",
+                  driverName,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: displayWidth(context) * 0.06,
@@ -105,7 +102,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ),
                 SizedBox(
-                  height: displayHeight(context) * 0.04,
+                  height: displayHeight(context) * 0.02,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -118,8 +115,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                     ),
                     Text(
-                      //User().getLicense(),
-                      "B1234567",
+                      User().getLicense(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: displayWidth(context) * 0.05,
@@ -145,31 +141,31 @@ class _ProfileBodyState extends State<ProfileBody> {
             ),
             child: Column(
               children: [
-                // Expanded(
-                //   //flex: 2,
-                //   child: FutureBuilder(
-                //     future: getProfileDetails(),
-                //     builder: (context, snapshot) {
-                //       if (snapshot.hasError) print(snapshot.error);
-                //       return snapshot.hasData
-                //           ? ListView.builder(
-                //               itemCount: snapshot.data.length,
-                //               itemBuilder: (context, index) {
-                //                 List list = snapshot.data;
-                //                 return ProfileDetailList(
-                //                   nic: list[index]['nic'],
-                //                   address: list[index]['address'],
-                //                   dob: list[index]['dob'],
-                //                   issueddate: list[index]['issuedate'],
-                //                   expirydate: list[index]['expirydate'],
-                //                   bloodgroup: list[index]['bloodgroup'],
-                //                 );
-                //               },
-                //             )
-                //           : Text("");
-                //     },
-                //   ),
-                // ),
+                Expanded(
+                  flex: 2,
+                  child: FutureBuilder(
+                    future: getProfileDetails(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                List list = snapshot.data;
+                                return ProfileDetailList(
+                                  nic: list[index]['nic'],
+                                  address: list[index]['address'],
+                                  dob: list[index]['dob'],
+                                  issueddate: list[index]['issuedate'],
+                                  expirydate: list[index]['expirydate'],
+                                  bloodgroup: list[index]['bloodgroup'],
+                                );
+                              },
+                            )
+                          : Text("");
+                    },
+                  ),
+                ),
               ],
             ),
           ),

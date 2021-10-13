@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:drivers_app/components/dbConnection.dart';
 import 'package:drivers_app/components/default_button.dart';
-import 'package:drivers_app/components/user.dart';
 import 'package:drivers_app/components/violationDetailArguments.dart';
 import 'package:drivers_app/screen_helper.dart';
+import 'package:drivers_app/screens/payment/payment_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -196,7 +196,9 @@ class _ViolationDetailBodyState extends State<ViolationDetailBody> {
               ),
               child: DefaultButton(
                 text: "Pay",
-                press: () {},
+                press: () {
+                  Navigator.pushNamed(context, PaymentScreen.routeName);
+                },
               ),
             ),
           ),

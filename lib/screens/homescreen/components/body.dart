@@ -5,6 +5,7 @@ import 'package:drivers_app/components/customDialog.dart';
 import 'package:drivers_app/components/dbConnection.dart';
 import 'package:drivers_app/components/user.dart';
 import 'package:drivers_app/components/violation_list_record.dart';
+import 'package:drivers_app/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -171,7 +172,7 @@ class _ViolationsBodyState extends State<ViolationsBody> {
             child: Column(
               children: [
                 SizedBox(
-                  height: displayHeight(context) * 0.075,
+                  height: displayHeight(context) * 0.05,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -202,7 +203,7 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                         ],
                       ),
                       SizedBox(
-                        height: displayHeight(context) * 0.02,
+                        height: displayHeight(context) * 0.015,
                       ),
                       Padding(
                         padding: EdgeInsets.only(
@@ -215,7 +216,7 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                         ),
                       ),
                       SizedBox(
-                        height: displayHeight(context) * 0.08,
+                        height: displayHeight(context) * 0.05,
                       ),
                       Row(
                         children: [
@@ -242,7 +243,7 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                         ],
                       ),
                       SizedBox(
-                        height: displayHeight(context) * 0.08,
+                        height: displayHeight(context) * 0.05,
                       ),
                       Row(
                         children: [
@@ -271,11 +272,38 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: displayHeight(context) * 0.08,
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.account_circle_rounded,
+                              size: displayWidth(context) * 0.1,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: displayWidth(context) * 0.03,
+                            ),
+                            Text(
+                              "View profile",
+                              style: TextStyle(
+                                fontSize: displayWidth(context) * 0.05,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: displayHeight(context) * 0.08,
+                  height: displayHeight(context) * 0.04,
                 ),
               ],
             ),

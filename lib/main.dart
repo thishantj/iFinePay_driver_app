@@ -1,5 +1,4 @@
 import 'package:drivers_app/routes.dart';
-import 'package:drivers_app/screens/profile/profile_screen.dart';
 import 'package:drivers_app/screens/sign_in/sign_in_screen.dart';
 import 'package:drivers_app/theme.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Driver app',
       theme: theme(),
       //home: SplashScreen(),
-      initialRoute: ProfileScreen.routeName,
+      initialRoute: SignInScreen.routeName,
       routes: routes,
     );
   }
