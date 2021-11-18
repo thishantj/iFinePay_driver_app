@@ -1,5 +1,6 @@
 import 'package:drivers_app/components/default_button.dart';
 import 'package:drivers_app/screen_helper.dart';
+import 'package:drivers_app/screens/otp/otp_screen.dart';
 import 'package:drivers_app/screens/sign_in/components/custom_surfix.dart';
 import 'package:drivers_app/screens/sign_in/components/form_error.dart';
 import 'package:drivers_app/screens/sign_in/components/no_account_text.dart';
@@ -27,7 +28,7 @@ class Body extends StatelessWidget {
                 ),
               ),
               Text(
-                "Please enter your email and we will send \nyou a link to return to your account",
+                "Please enter your license number and we will send \nyou an OTP to reset your account",
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: displayHeight(context) * 0.1),
@@ -49,6 +50,8 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   String email;
+  TextEditingController user = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -56,6 +59,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
       child: Column(
         children: [
           TextFormField(
+            controller: user,
             keyboardType: TextInputType.emailAddress,
             onSaved: (newValue) => email = newValue,
             onChanged: (value) {
@@ -85,8 +89,8 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               return null;
             },
             decoration: InputDecoration(
-              labelText: "Email",
-              hintText: "Enter your email",
+              labelText: "License number",
+              hintText: "Enter your license number",
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSuffixcon(svgIcon: "assets/icons/username.svg"),
             ),
@@ -97,7 +101,9 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           DefaultButton(
             text: "Continue",
             press: () {
-              if (_formKey.currentState.validate()) {}
+              if (_formKey.currentState.validate()) {
+                Navigator.pushNamed(context, OtpScreen.routeName, arguments: user.text);
+              }
             },
           ),
           SizedBox(height: displayHeight(context) * 0.1),

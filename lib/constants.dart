@@ -25,6 +25,7 @@ final RegExp emailValidatorRegExp = RegExp("source");
 const String kEmailNullError = "Please Enter your license";
 const String kInvaidEmailError = "Please Enter valid Email";
 const String kPassNullError = "Please Enter your password";
+const String kOTPNullError = "Please Enter OTP";
 const String kShortPassError = "Password is too short";
 const String kMatchPassError = "Passwords don't match";
 const String kNameNullError = "Please enter your name";

@@ -5,11 +5,14 @@ class OtpScreen extends StatelessWidget {
   static String routeName = "/otp";
   @override
   Widget build(BuildContext context) {
+
+    final args = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("OTP Verification"),
       ),
-      body: Body(),
+      body: Body(args: args),
     );
   }
 }

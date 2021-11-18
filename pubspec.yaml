@@ -33,6 +33,8 @@ dependencies:
   shared_preferences:
   flutter_svg: ^0.22.0 #help us to use SVG in our app
   provider: ^4.3.1 #for state management
+  credit_card_validator:
+  intl: 
 
 dev_dependencies:
   flutter_test:

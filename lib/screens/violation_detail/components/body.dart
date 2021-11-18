@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:drivers_app/components/PaymentDetailArguments.dart';
 import 'package:drivers_app/components/dbConnection.dart';
 import 'package:drivers_app/components/default_button.dart';
 import 'package:drivers_app/components/violationDetailArguments.dart';
@@ -12,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'violation_list_record.dart';
 
 Color bgColor;
+int price;
 
 class ViolationDetailBody extends StatefulWidget {
   const ViolationDetailBody({
@@ -159,6 +161,7 @@ class _ViolationDetailBodyState extends State<ViolationDetailBody> {
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
                           List list = snapshot.data;
+                          price = int.parse(list[index]['price']);
                           return ViolationDetailList(
                             numberplate: list[index]['number_plate'],
                             violationtype: list[index]['violation_type_id'],
@@ -197,7 +200,10 @@ class _ViolationDetailBodyState extends State<ViolationDetailBody> {
               child: DefaultButton(
                 text: "Pay",
                 press: () {
-                  Navigator.pushNamed(context, PaymentScreen.routeName);
+
+                  PaymentDetailArguments pda = new PaymentDetailArguments(widget.args.violationId, price);
+
+                  Navigator.pushNamed(context, PaymentScreen.routeName, arguments: pda);
                 },
               ),
             ),
