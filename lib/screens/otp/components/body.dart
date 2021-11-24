@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drivers_app/components/dbConnection.dart';
-import 'package:drivers_app/constants.dart';
 import 'package:drivers_app/screen_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

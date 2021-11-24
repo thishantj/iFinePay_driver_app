@@ -32,7 +32,7 @@ class _SignFormState extends State<SignForm> {
       "licenseNumber": licenseno.text,
       "password": pass.text,
     });
-
+    Navigator.of(context).pop();
     var data = json.decode(response.body);
     if (data == "Error") {
       Fluttertoast.showToast(

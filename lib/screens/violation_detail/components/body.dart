@@ -200,8 +200,8 @@ class _ViolationDetailBodyState extends State<ViolationDetailBody> {
               child: DefaultButton(
                 text: "Pay",
                 press: () {
-
-                  PaymentDetailArguments pda = new PaymentDetailArguments(widget.args.violationId, price);
+                  print("V id: " + widget.args.violationId);
+                  PaymentDetailArguments pda = new PaymentDetailArguments(widget.args.violationId, widget.args.licenseNo, price);
 
                   Navigator.pushNamed(context, PaymentScreen.routeName, arguments: pda);
                 },

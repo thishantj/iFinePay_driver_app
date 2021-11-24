@@ -9,11 +9,13 @@ class ViolationListRecord extends StatefulWidget {
     @required this.violationId,
     this.price,
     this.payment,
+    this.licenseNo,
   }) : super(key: key);
 
   final String violationId;
   final String price;
   final String payment;
+  final String licenseNo;
 
   @override
   _ViolationListRecordState createState() => _ViolationListRecordState();
@@ -105,7 +107,7 @@ class _ViolationListRecordState extends State<ViolationListRecord> {
                 paymentIcon,
                 IconButton(
                   onPressed: (){
-                    ViolationDetailArguments vda = new ViolationDetailArguments(widget.violationId, widget.payment);
+                    ViolationDetailArguments vda = new ViolationDetailArguments(widget.violationId, widget.payment, widget.licenseNo);
                     Navigator.pushNamed(context, ViolationDetailScreen.routeName, arguments: vda);
                   },
                   icon: Icon(

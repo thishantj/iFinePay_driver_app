@@ -738,7 +738,7 @@ class _ViolationDetailListState extends State<ViolationDetailList> {
                             height: displayWidth(context) * 0.025,
                           ),
                           Text(
-                            widget.finesheet,
+                            "widget.finesheet",
                             style: TextStyle(
                               fontSize: displayWidth(context) * 0.05,
                               fontWeight: FontWeight.bold,
@@ -837,7 +837,7 @@ class _ViolationDetailListState extends State<ViolationDetailList> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          left: displayWidth(context) * 0.1,
+                          left: displayWidth(context) * 0.05,
                         ),
                         child: Column(
                           children: [
@@ -854,7 +854,29 @@ class _ViolationDetailListState extends State<ViolationDetailList> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
+                                  "Date: ",
+                                  style: TextStyle(
+                                    fontSize: displayWidth(context) * 0.05,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: displayWidth(context) * 0.125,
+                                ),
+                                Text(
                                   paydate,
+                                  style: TextStyle(
+                                    fontSize: displayWidth(context) * 0.05,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Time: ",
                                   style: TextStyle(
                                     fontSize: displayWidth(context) * 0.05,
                                     fontWeight: FontWeight.bold,

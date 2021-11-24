@@ -30,7 +30,7 @@ class PaymentBody extends StatelessWidget {
                     displayWidth(context) * 0.05,
                     0,
                   ),
-                  child: PaymentForm(violationId: args.violationId, price: args.price),
+                  child: PaymentForm(violationId: args.violationId, licenseNo: args.licenseNo, price: args.price),
                 ),
                 SizedBox(height: displayHeight(context) * 0.08),
               ],

@@ -63,19 +63,33 @@ class _ViolationsBodyState extends State<ViolationsBody> {
       "licenseNumber": User().getLicense(),
     });
 
-    var data = json.decode(response.body).cast<Map<String, dynamic>>();
-    data.forEach((element) => print(element));
+    var data;
+
+    if (json.decode(response.body) == "No") {
+      print("no records");
+    } else {
+      data = json.decode(response.body).cast<Map<String, dynamic>>();
+      data.forEach((element) => print(element));
+    }
+
     return data;
   }
 
   Future getAllViolations() async {
+    print("l_no: " + User().getLicense());
     var url = DBConnect().conn + "/readViolations.php";
     var response = await http.post(Uri.parse(url), body: {
       "licenseNumber": User().getLicense(),
     });
 
-    var data = json.decode(response.body).cast<Map<String, dynamic>>();
-    data.forEach((element) => print(element));
+    var data;
+
+    if (json.decode(response.body) == "No") {
+      print("no records");
+    } else {
+      data = json.decode(response.body).cast<Map<String, dynamic>>();
+      data.forEach((element) => print(element));
+    }
     return data;
   }
 
@@ -276,7 +290,8 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                         height: displayHeight(context) * 0.08,
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+                        onTap: () => Navigator.pushNamed(
+                            context, ProfileScreen.routeName),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -369,6 +384,7 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                                           itemBuilder: (context, index) {
                                             List list = snapshot.data;
                                             return ViolationListRecord(
+                                              licenseNo: User().getLicense(),
                                               violationId: list[index]
                                                   ['violation_id'],
                                               price: list[index]['price'],
@@ -391,6 +407,7 @@ class _ViolationsBodyState extends State<ViolationsBody> {
                                           itemBuilder: (context, index) {
                                             List list = snapshot.data;
                                             return ViolationListRecord(
+                                              licenseNo: User().getLicense(),
                                               violationId: list[index]
                                                   ['violation_id'],
                                               price: list[index]['price'],

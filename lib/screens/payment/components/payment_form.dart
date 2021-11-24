@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:drivers_app/screens/homescreen/home_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
 import 'package:drivers_app/components/dbConnection.dart';
 import 'package:drivers_app/components/default_button.dart';
@@ -19,10 +19,12 @@ class PaymentForm extends StatefulWidget {
   const PaymentForm({
     Key key,
     this.violationId,
+    this.licenseNo,
     this.price,
   }) : super(key: key);
 
   final String violationId;
+  final String licenseNo;
   final int price;
 
   @override
@@ -89,25 +91,25 @@ class _PaymentFormState extends State<PaymentForm> {
     print("CC: " + ccNumResults.isValid.toString());
     print("Expire date: " + expDateResults.isValid.toString());
     print("CVV: " + cvvResults.isValid.toString());
+    print("V id: " + widget.violationId);
+    print("license number: " + widget.licenseNo.toString());
 
-    if(ccNumResults.isValid.toString() == "true" && expDateResults.isValid.toString() == "true" && cvvResults.isValid.toString() == "true")
-    {
+    if (ccNumResults.isValid.toString() == "true" &&
+        expDateResults.isValid.toString() == "true" &&
+        cvvResults.isValid.toString() == "true") {
+          
       var url = DBConnect().conn + "/makePayment.php";
       var response = await http.post(Uri.parse(url), body: {
         "violation_id": widget.violationId,
         "payment_method": "Card",
-        "payment_date": getCurrentDate(),
-        "payment_time": getCurrentTime(),
       });
 
       var data = json.decode(response.body);
 
-      if(data == "success")
-      {
-        Navigator.pushNamed(context, HomeScreen.routeName);
-      }
-      else
-      {
+      if (data == "success") {
+        updateDriverLicenseStatus();
+
+      } else {
         Fluttertoast.showToast(
             msg: "Cannot update record",
             toastLength: Toast.LENGTH_SHORT,
@@ -117,35 +119,72 @@ class _PaymentFormState extends State<PaymentForm> {
             textColor: Colors.white,
             fontSize: 16.0);
       }
-    }
-    else
-    {
+    } else {
       Fluttertoast.showToast(
-            msg: "Card number is not valid",
+          msg: "Card number is not valid",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 10,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
+
+  Future updateDriverLicenseStatus() async {
+    try {
+      var url = DBConnect().conn + "/updateStatusForPayment.php";
+      var response = await http.post(Uri.parse(url), body: {
+        "licenseNumber": widget.licenseNo,
+      });
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+
+        if (data == "success") {
+          Navigator.pushNamed(context, HomeScreen.routeName);
+        } else {
+          Fluttertoast.showToast(
+            msg: "Cannot update license status",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 10,
-            backgroundColor: Colors.red,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black,
             textColor: Colors.white,
-            fontSize: 16.0);
+            fontSize: 12,
+          );
+        }
+      } else {
+        Fluttertoast.showToast(
+          msg: "Server error",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 10,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      }
+    } on SocketException catch (e) {
+      print('Socket Error: $e');
+      Fluttertoast.showToast(
+          msg: "Socket error",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 10,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } on Error catch (e) {
+      print('General Error: $e');
+      Fluttertoast.showToast(
+          msg: "Error!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 10,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
-  }
-
-  static String getCurrentDate() {
-    var date = new DateTime.now().toString();
-
-    var dateParse = DateTime.parse(date);
-
-    var formattedDate = "${dateParse.day}-${dateParse.month}-${dateParse.year}";
-
-    return formattedDate.toString();
-  }
-
-  static String getCurrentTime() {
-    DateTime now = DateTime.now();
-    String formattedTime = DateFormat('hh:mm').format(now);
-
-    return formattedTime.toString();
   }
 
   @override
@@ -162,63 +201,88 @@ class _PaymentFormState extends State<PaymentForm> {
             height: displayHeight(context) * 0.04,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      Text("Expire date:"),
-                      Text("(MM/YY)"),
-                    ],
-                  ),
-                  SizedBox(
-                    width: displayWidth(context) * 0.015,
-                  ),
-                  SizedBox(
-                    width: displayWidth(context) * 0.1,
-                    child: TextFormField(
-                      //autofocus: true,
-                      controller: expmonth,
-                      onSaved: (newValue) => expiremonth = newValue,
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontSize: displayWidth(context) * 0.04,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: otpInputDecoration,
-                      onChanged: (value) {
-                        nextFeild(value: value, focusNode: expYear);
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: displayWidth(context) * 0.015,
-                  ),
-                  SizedBox(
-                    width: displayWidth(context) * 0.1,
-                    child: TextFormField(
-                      focusNode: expYear,
-                      controller: expyear,
-                      onSaved: (newValue) => expireyear = newValue,
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        fontSize: displayWidth(context) * 0.04,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: otpInputDecoration,
-                      onChanged: (value) {
-                        if (value.length == 2) {
-                          expYear.unfocus();
-                        }
-                      },
-                    ),
-                  ),
+                  Text("Expire date:"),
+                  Text("(MM/YY)"),
                 ],
               ),
+              SizedBox(
+                width: displayWidth(context) * 0.01,
+              ),
+              SizedBox(
+                width: displayWidth(context) * 0.2,
+                child: TextFormField(
+                  //autofocus: true,
+                  controller: expmonth,
+                  onSaved: (newValue) => expiremonth = newValue,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: displayWidth(context) * 0.04,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    enabledBorder: outlineInputBorder(),
+                    focusedBorder: outlineInputBorder(),
+                    border: outlineInputBorder(),
+                    hintText: "MM",
+                    hintStyle: TextStyle(
+                      fontSize: displayWidth(context) * 0.03,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  onChanged: (value) {
+                    nextFeild(value: value, focusNode: expYear);
+                  },
+                ),
+              ),
+              SizedBox(
+                width: displayWidth(context) * 0.015,
+              ),
+              SizedBox(
+                width: displayWidth(context) * 0.2,
+                child: TextFormField(
+                  focusNode: expYear,
+                  controller: expyear,
+                  onSaved: (newValue) => expireyear = newValue,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    fontSize: displayWidth(context) * 0.04,
+                  ),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    enabledBorder: outlineInputBorder(),
+                    focusedBorder: outlineInputBorder(),
+                    border: outlineInputBorder(),
+                    hintText: "YY",
+                    hintStyle: TextStyle(
+                      fontSize: displayWidth(context) * 0.03,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  onChanged: (value) {
+                    if (value.length == 2) {
+                      expYear.unfocus();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: displayHeight(context) * 0.04,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("CVV: "),
               Spacer(),
               SizedBox(
-                width: displayWidth(context) * 0.4,
+                width: displayWidth(context) * 0.5,
                 child: buildCVVFormField(),
               ),
             ],
